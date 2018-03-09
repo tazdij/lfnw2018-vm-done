@@ -38,25 +38,6 @@ procedure VM_FreeState(state : PVMState);
 procedure VM_Run(state : PVMState);
 
 
-(* Stack handling functions *)
-function VM_PopInteger(state : PVMState; index : Integer = -1) : Integer;
-function VM_PopSingle(state : PVMState; index : Integer = -1) : Single;
-function VM_PopDouble(state : PVMState; index: Integer = -1) : Double;
-function VM_PopBool(state : PVMState; index : Integer = -1) : Boolean;
-function VM_PopByte(state : PVMState; index : Integer = -1) : Byte;
-function VM_PopWord(state : PVMState; index : Integer = -1) : Word;
-function VM_PopString(state : PVMState; index : Integer = -1) : AnsiString;
-function VM_GetStackType(state : PVMState; index : Integer = -1) : EVMType;
-
-function VM_PushInteger(state : PVMState; val : Integer) : Integer;
-function VM_PushSingle(state : PVMState; val : Single) : Integer;
-function VM_PushDouble(state : PVMState; val : Double) : Integer;
-function VM_PushBool(state : PVMState; val : Boolean) : Integer;
-function VM_PushByte(state : PVMState; val : Byte) : Integer;
-function VM_PushWord(state : PVMState; val : Word) : Integer;
-function VM_PushString(state : PVMState; val : AnsiString) : Integer;
-
-
 procedure VM_RegisterOpHandler(state : PVMState; code : Byte; func : VMOpFunc);
 
 implementation
@@ -66,13 +47,16 @@ implementation
   Naming convention for handlers
     I - LongInteger (Little Endian)
     B - Byte
+    C - Char* (C String)
     R - Register
     H - Heap Address (Little Endian)
     S - Stack Operation
+    O - Output
 
     Modifiers
     i - indirection
     l - literal
+    x - array, multiple of type
 
 *)
 
@@ -89,19 +73,29 @@ begin
 
 end;
 
+(* Move a value in a Register into another Register *)
+(* MOV   R1  R2 *)
+procedure VM_OpMOV_RR(state : PVMState);
+begin
+
+end;
+
 (* Move a constant integer into a Heap Memory Address *)
 (* MOV   @x00010000  x00000001 *)
 procedure VM_OpMOV_HIl(state : PVMState);
 var addr : LongInt;
+    tmp : LongInt;
 begin
   Move(state^.PM[state^.PC + 1], addr, 4);
   Move(state^.PM[state^.PC + 5], state^.HM[addr], 4);
+  Move(state^.PM[state^.PC + 5], tmp, 4);
+  WriteLn(addr, ' = ', tmp);
   state^.PC := state^.PC + 9;
 end;
 
 (* Copy from Heap Memory into Heap Memory for x num bytes *)
 (* MOV   @x00010000  @x04010000  x04000000 *)
-procedure VM_OpMOV_HHbi(state : PVMState);
+procedure VM_OpMOV_HHBx(state : PVMState);
 var addrDest : LongInt;
     addrSrc : LongInt;
     count : LongInt;
@@ -115,6 +109,19 @@ begin
   state^.PC := state^.PC + 13;
 end;
 
+(* Output from Heap Memory to Console Integer *)
+(* PRINTI @x00010000 *)
+procedure VM_OpPRINT_HOI(state : PVMState);
+var addr : LongInt;
+    val : LongInt;
+begin
+  Move(state^.PM[state^.PC + 1], addr, 4);
+  Move(state^.HM[addr], val, 4);
+
+  WriteLn(val);
+
+  state^.PC := state^.PC + 5;
+end;
 
 function VM_NewState(StackSize : Cardinal; HeapSize : Cardinal; CodeFile : AnsiString) : PVMState;
 var state : PVMState;
@@ -161,7 +168,8 @@ begin
   (* Register our handlers *)
   VM_RegisterOpHandler(state, 0, @VM_OpHALT);
   VM_RegisterOpHandler(state, 1, @VM_OpMOV_HIl);
-  VM_RegisterOpHandler(state, 2, @VM_OpMOV_HHbi);
+  VM_RegisterOpHandler(state, 2, @VM_OpMOV_HHBx);
+  VM_RegisterOpHandler(state, 3, @VM_OpPRINT_HOI);
 
   Result := state;
 end;
@@ -218,81 +226,6 @@ begin
 
 end;
 
-function VM_PopInteger(state : PVMState; index : Integer = -1) : Integer;
-begin
-
-end;
-
-function VM_PopSingle(state : PVMState; index : Integer = -1) : Single;
-begin
-
-end;
-
-function VM_PopDouble(state : PVMState; index: Integer = -1) : Double;
-begin
-
-end;
-
-function VM_PopBool(state : PVMState; index : Integer = -1) : Boolean;
-begin
-
-end;
-
-function VM_PopByte(state : PVMState; index : Integer = -1) : Byte;
-begin
-
-end;
-
-function VM_PopWord(state : PVMState; index : Integer = -1) : Word;
-begin
-
-end;
-
-function VM_PopString(state : PVMState; index: Integer = -1) : AnsiString;
-begin
-
-end;
-
-function VM_GetStackType(state : PVMState; index : Integer = -1) : EVMType;
-begin
-
-
-end;
-
-function VM_PushInteger(state : PVMState; val : Integer) : Integer;
-begin
-
-end;
-
-function VM_PushSingle(state : PVMState; val : Single) : Integer;
-begin
-
-end;
-
-function VM_PushDouble(state : PVMState; val : Double) : Integer;
-begin
-
-end;
-
-function VM_PushBool(state : PVMState; val : Boolean) : Integer;
-begin
-
-end;
-
-function VM_PushByte(state : PVMState; val : Byte) : Integer;
-begin
-
-end;
-
-function VM_PushWord(state : PVMState; val : Word) : Integer;
-begin
-
-end;
-
-function VM_PushString(state : PVMState; val : AnsiString) : Integer;
-begin
-
-end;
 
 procedure VM_RegisterOpHandler(state : PVMState; code : Byte; func : VMOpFunc);
 begin

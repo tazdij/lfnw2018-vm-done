@@ -17,145 +17,145 @@
         <UnitName Value="lfnwVM"/>
         <IsVisibleTab Value="True"/>
         <EditorIndex Value="1"/>
-        <TopLine Value="96"/>
-        <CursorPos X="16" Y="106"/>
+        <TopLine Value="83"/>
+        <CursorPos X="34" Y="100"/>
         <UsageCount Value="250"/>
         <Loaded Value="True"/>
       </Unit1>
       <Unit2>
         <Filename Value="unit1.pas"/>
         <UnitName Value="lfnwVM"/>
-        <UsageCount Value="219"/>
+        <UsageCount Value="216"/>
       </Unit2>
       <Unit3>
         <Filename Value="/usr/share/fpcsrc/3.0.0/rtl/inc/systemh.inc"/>
         <EditorIndex Value="2"/>
         <TopLine Value="734"/>
         <CursorPos X="11" Y="751"/>
-        <UsageCount Value="18"/>
+        <UsageCount Value="31"/>
         <Loaded Value="True"/>
       </Unit3>
     </Units>
     <JumpHistory Count="30" HistoryIndex="29">
       <Position1>
         <Filename Value="lfnwvm.pas"/>
-        <Caret Line="50" TopLine="28"/>
+        <Caret Line="51" TopLine="28"/>
       </Position1>
       <Position2>
         <Filename Value="lfnwvm.pas"/>
-        <Caret Line="51" TopLine="28"/>
+        <Caret Line="52" TopLine="28"/>
       </Position2>
       <Position3>
         <Filename Value="lfnwvm.pas"/>
-        <Caret Line="52" TopLine="28"/>
+        <Caret Line="48" TopLine="28"/>
       </Position3>
       <Position4>
         <Filename Value="lfnwvm.pas"/>
-        <Caret Line="48" TopLine="28"/>
+        <Caret Line="50" TopLine="28"/>
       </Position4>
       <Position5>
         <Filename Value="lfnwvm.pas"/>
-        <Caret Line="50" TopLine="28"/>
+        <Caret Line="51" TopLine="28"/>
       </Position5>
       <Position6>
         <Filename Value="lfnwvm.pas"/>
-        <Caret Line="51" TopLine="28"/>
+        <Caret Line="52" TopLine="28"/>
       </Position6>
       <Position7>
         <Filename Value="lfnwvm.pas"/>
-        <Caret Line="52" TopLine="28"/>
+        <Caret Line="48" TopLine="28"/>
       </Position7>
       <Position8>
         <Filename Value="lfnwvm.pas"/>
-        <Caret Line="48" TopLine="28"/>
+        <Caret Line="50" TopLine="28"/>
       </Position8>
       <Position9>
         <Filename Value="lfnwvm.pas"/>
-        <Caret Line="50" TopLine="28"/>
+        <Caret Line="51" TopLine="28"/>
       </Position9>
       <Position10>
         <Filename Value="lfnwvm.pas"/>
-        <Caret Line="51" TopLine="28"/>
+        <Caret Line="52" TopLine="28"/>
       </Position10>
       <Position11>
         <Filename Value="lfnwvm.pas"/>
-        <Caret Line="52" TopLine="28"/>
+        <Caret Line="48" TopLine="28"/>
       </Position11>
       <Position12>
         <Filename Value="lfnwvm.pas"/>
-        <Caret Line="48" TopLine="28"/>
+        <Caret Line="55" TopLine="38"/>
       </Position12>
       <Position13>
         <Filename Value="lfnwvm.pas"/>
-        <Caret Line="55" TopLine="38"/>
+        <Caret Line="66" TopLine="39"/>
       </Position13>
       <Position14>
         <Filename Value="lfnwvm.pas"/>
-        <Caret Line="66" TopLine="39"/>
+        <Caret Line="67" TopLine="40"/>
       </Position14>
       <Position15>
         <Filename Value="lfnwvm.pas"/>
-        <Caret Line="67" TopLine="40"/>
+        <Caret Line="68" TopLine="41"/>
       </Position15>
       <Position16>
         <Filename Value="lfnwvm.pas"/>
-        <Caret Line="68" TopLine="41"/>
+        <Caret Line="29" Column="42" TopLine="7"/>
       </Position16>
       <Position17>
         <Filename Value="lfnwvm.pas"/>
-        <Caret Line="29" Column="42" TopLine="7"/>
+        <Caret Line="24" Column="49" TopLine="9"/>
       </Position17>
       <Position18>
         <Filename Value="lfnwvm.pas"/>
-        <Caret Line="24" Column="49" TopLine="9"/>
+        <Caret Line="35" Column="56" TopLine="12"/>
       </Position18>
       <Position19>
         <Filename Value="lfnwvm.pas"/>
-        <Caret Line="35" Column="56" TopLine="12"/>
+        <Caret Line="88" Column="74" TopLine="63"/>
       </Position19>
       <Position20>
         <Filename Value="lfnwvm.pas"/>
-        <Caret Line="88" Column="74" TopLine="63"/>
+        <Caret Line="206" Column="5" TopLine="173"/>
       </Position20>
       <Position21>
         <Filename Value="lfnwvm.pas"/>
-        <Caret Line="206" Column="5" TopLine="173"/>
+        <Caret Line="58" Column="77" TopLine="41"/>
       </Position21>
       <Position22>
         <Filename Value="lfnwvm.pas"/>
-        <Caret Line="58" Column="77" TopLine="41"/>
+        <Caret Line="204" Column="72" TopLine="177"/>
       </Position22>
       <Position23>
         <Filename Value="lfnwvm.pas"/>
-        <Caret Line="204" Column="72" TopLine="177"/>
+        <Caret Line="167" TopLine="157"/>
       </Position23>
       <Position24>
         <Filename Value="lfnwvm.pas"/>
-        <Caret Line="167" TopLine="157"/>
+        <Caret Line="169" TopLine="157"/>
       </Position24>
       <Position25>
         <Filename Value="lfnwvm.pas"/>
-        <Caret Line="169" TopLine="157"/>
+        <Caret Line="170" TopLine="157"/>
       </Position25>
       <Position26>
         <Filename Value="lfnwvm.pas"/>
-        <Caret Line="170" TopLine="157"/>
+        <Caret Line="94" Column="79" TopLine="80"/>
       </Position26>
       <Position27>
         <Filename Value="lfnwvm.pas"/>
-        <Caret Line="94" Column="79" TopLine="80"/>
+        <Caret Line="95" Column="31" TopLine="77"/>
       </Position27>
       <Position28>
         <Filename Value="lfnwvm.pas"/>
-        <Caret Line="95" Column="31" TopLine="77"/>
+        <Caret Line="94" Column="36" TopLine="77"/>
       </Position28>
       <Position29>
         <Filename Value="lfnwvm.pas"/>
-        <Caret Line="94" Column="36" TopLine="77"/>
+        <Caret Line="113" Column="56" TopLine="89"/>
       </Position29>
       <Position30>
         <Filename Value="lfnwvm.pas"/>
-        <Caret Line="113" Column="56" TopLine="89"/>
+        <Caret Line="101" Column="29" TopLine="82"/>
       </Position30>
     </JumpHistory>
   </ProjectSession>
