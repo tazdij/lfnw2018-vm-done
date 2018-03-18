@@ -69,6 +69,8 @@ end;
 (* Move a constant integer into a Register *)
 (* MOV   R1  xFEED0101 *)
 procedure VM_OpMOV_RIl(state : PVMState);
+var reg : Byte;
+
 begin
 
 end;
@@ -123,6 +125,21 @@ begin
   state^.PC := state^.PC + 5;
 end;
 
+(* Output from Heap Memory to Console Char *)
+(* PRINTC @x00010000  *)
+procedure VM_OpPRINT_HOC(state : PVMState);
+var addr : LongInt;
+    val : Char;
+begin
+  Move(state^.PM[state^.PC + 1], addr, 4);
+  Move(state^.HM[addr], val, 1);
+
+  Write(val);
+
+  state^.PC := state^.PC + 5;
+
+end;
+
 function VM_NewState(StackSize : Cardinal; HeapSize : Cardinal; CodeFile : AnsiString) : PVMState;
 var state : PVMState;
     f : file;
@@ -170,6 +187,8 @@ begin
   VM_RegisterOpHandler(state, 1, @VM_OpMOV_HIl);
   VM_RegisterOpHandler(state, 2, @VM_OpMOV_HHBx);
   VM_RegisterOpHandler(state, 3, @VM_OpPRINT_HOI);
+  VM_RegisterOpHandler(state, 4, @VM_OpPRINT_HOC); // Special functionality, stops at first NULL (0) Byte
+
 
   Result := state;
 end;
@@ -205,6 +224,7 @@ begin
   end;
 
   (* Dump Heap memory to console *)
+  WriteLn('');
   for i := 0 to Length(state^.HM) - 1 do
   begin
     Write(HexStr(state^.HM[i], 2), ' ');

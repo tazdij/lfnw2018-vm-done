@@ -6,20 +6,12 @@ uses
   {$IFDEF UNIX}{$IFDEF UseCThreads}
   cthreads,
   {$ENDIF}{$ENDIF}
-  Classes, lfnwVM
-  { you can add units after this };
+  Classes,
+  lfnwVM;
 var vm : PVMState;
 
-
-
-
-
-
-
 begin
-  WriteLn('Hello World');
-
-  vm := VM_NewState(65536, 1024, './temp.bin');
+  vm := VM_NewState(65536, 1024, ParamStr(1));
 
   VM_Run(vm);
 
