@@ -70,9 +70,10 @@ end;
 (* MOV   R1  xFEED0101 *)
 procedure VM_OpMOV_RIl(state : PVMState);
 var reg : Byte;
-
 begin
-
+  Move(state^.PM[state^.PC + 1], reg, 1);
+  Move(state^.PM[state^.PC + 2], state^.RM[reg], 4);
+  stat^.PC := state^.PC + 7;
 end;
 
 (* Move a value in a Register into another Register *)
@@ -86,12 +87,12 @@ end;
 (* MOV   @x00010000  x00000001 *)
 procedure VM_OpMOV_HIl(state : PVMState);
 var addr : LongInt;
-    tmp : LongInt;
+    //tmp : LongInt;
 begin
   Move(state^.PM[state^.PC + 1], addr, 4);
   Move(state^.PM[state^.PC + 5], state^.HM[addr], 4);
-  Move(state^.PM[state^.PC + 5], tmp, 4);
-  WriteLn(addr, ' = ', tmp);
+  //Move(state^.PM[state^.PC + 5], tmp, 4);
+  //WriteLn(addr, ' = ', tmp);
   state^.PC := state^.PC + 9;
 end;
 
