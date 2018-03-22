@@ -24,6 +24,7 @@ type
     RM : Array[0..255] of Byte; (* Register Memory *)
 
     SP : Cardinal; (* Stack Pointer *)
+    FP : Cardinal; (* Frame Pointer *)
     PC : Cardinal; (* Program Counter *)
 
     (* Handlers for all OpCodes in our VM *)
@@ -73,7 +74,7 @@ var reg : Byte;
 begin
   Move(state^.PM[state^.PC + 1], reg, 1);
   Move(state^.PM[state^.PC + 2], state^.RM[reg], 4);
-  stat^.PC := state^.PC + 7;
+  state^.PC := state^.PC + 7;
 end;
 
 (* Move a value in a Register into another Register *)
@@ -129,8 +130,8 @@ end;
 (* Output from Heap Memory to Console Char *)
 (* PRINTC @x00010000  *)
 procedure VM_OpPRINT_HOC(state : PVMState);
-var addr : LongInt;
-    val : Char;
+var addr : LongInt = 0;
+    val : Char = #0;
 begin
   Move(state^.PM[state^.PC + 1], addr, 4);
   Move(state^.HM[addr], val, 1);
@@ -138,6 +139,75 @@ begin
   Write(val);
 
   state^.PC := state^.PC + 5;
+end;
+
+(* Push a 32bit value onto the stack *)
+(* PUSHI x41 *)
+procedure VM_OpPUSH_Il(state : PVMState);
+begin
+  Move(state^.PM[state^.PC + 1], state^.SM[state^.SP], 4);
+  state^.SP := state^.SP + 4;
+
+  state^.PC := state^.PC + 5;
+end;
+
+(* Push 32bit value in the heap location *)
+(* PUSHI @X00010000 *)
+procedure VM_OpPUSH_HI(state : PVMState);
+begin
+
+end;
+
+(* Push a 32bit value from a register into the stack *)
+(* PUSH R2 *)
+procedure VM_OpPUSH_RI(state : PVMState);
+begin
+
+end;
+
+procedure VM_OpPOP_HI(state : PVMState);
+begin
+
+end;
+
+procedure VM_OpPOP_RI(state : PVMState);
+begin
+
+end;
+
+procedure VM_OpPOP_SI(state : PVMState);
+begin
+
+end;
+
+procedure VM_OpADD_SI(state : PVMState);
+var valA, valB : LongInt;
+begin
+  Move(state^.SM[state^.SP - 4], valA, 4);
+  Move(state^.SM[state^.SP - 8], valB, 4);
+  valA := valA + valB;
+  Move(valA, state^.SM[state^.SP - 8], 4);
+  state^.SP := state^.SP - 4;
+  state^.PC := state^.PC + 1;
+end;
+
+procedure VM_OpADD_HSI(state : PVMState);
+begin
+
+end;
+
+procedure VM_OpADD_HHI(state : PVMState);
+begin
+
+end;
+
+procedure VM_OpADD_HRI(state : PVMState);
+begin
+
+end;
+
+procedure VM_OpADD_RSI(state : PVMState);
+begin
 
 end;
 
@@ -182,13 +252,17 @@ begin
   (* Initialize Registers *)
   state^.PC := 0;
   state^.SP := 0;
+  state^.FP := 0;
 
   (* Register our handlers *)
   VM_RegisterOpHandler(state, 0, @VM_OpHALT);
   VM_RegisterOpHandler(state, 1, @VM_OpMOV_HIl);
   VM_RegisterOpHandler(state, 2, @VM_OpMOV_HHBx);
-  VM_RegisterOpHandler(state, 3, @VM_OpPRINT_HOI);
-  VM_RegisterOpHandler(state, 4, @VM_OpPRINT_HOC); // Special functionality, stops at first NULL (0) Byte
+  VM_RegisterOpHandler(state, 3, @VM_OpMOV_RIl);
+  VM_RegisterOpHandler(state, 4, @VM_OpPRINT_HOI);
+  VM_RegisterOpHandler(state, 5, @VM_OpPRINT_HOC); // Special functionality, stops at first NULL (0) Byte
+
+  VM_RegisterOpHandler(state, 10, @VM_OpPUSH_Il);
 
 
   Result := state;
@@ -226,9 +300,33 @@ begin
 
   (* Dump Heap memory to console *)
   WriteLn('');
+  WriteLn('Heap Memory:');
+  j := 0;
   for i := 0 to Length(state^.HM) - 1 do
   begin
     Write(HexStr(state^.HM[i], 2), ' ');
+
+    if (i + 1) mod 8 = 0 then
+    begin
+      WriteLn();
+
+      Inc(j);
+      if j = 8 then
+      begin
+        WriteLn();
+        WriteLn(i+1);
+        j := 0;
+      end;
+
+    end;
+  end;
+
+  WriteLn('');
+  WriteLn('Stack Memory:');
+  j := 0;
+  for i := 0 to Length(state^.SM) - 1 do
+  begin
+    Write(HexStr(state^.SM[i], 2), ' ');
 
     if (i + 1) mod 8 = 0 then
     begin

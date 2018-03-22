@@ -11,7 +11,7 @@ uses
 var vm : PVMState;
 
 begin
-  vm := VM_NewState(65536, 1024, ParamStr(1));
+  vm := VM_NewState(512, 512, ParamStr(1));
 
   VM_Run(vm);
 
