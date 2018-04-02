@@ -7,7 +7,6 @@
       <Unit0>
         <Filename Value="lfnw.lpr"/>
         <IsPartOfProject Value="True"/>
-        <IsVisibleTab Value="True"/>
         <CursorPos X="29" Y="14"/>
         <UsageCount Value="232"/>
         <Loaded Value="True"/>
@@ -16,9 +15,10 @@
         <Filename Value="lfnwvm.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="lfnwVM"/>
+        <IsVisibleTab Value="True"/>
         <EditorIndex Value="1"/>
-        <TopLine Value="289"/>
-        <CursorPos X="13" Y="293"/>
+        <TopLine Value="132"/>
+        <CursorPos X="32" Y="139"/>
         <UsageCount Value="250"/>
         <Loaded Value="True"/>
       </Unit1>
@@ -32,11 +32,11 @@
         <EditorIndex Value="2"/>
         <TopLine Value="734"/>
         <CursorPos X="11" Y="751"/>
-        <UsageCount Value="32"/>
+        <UsageCount Value="34"/>
         <Loaded Value="True"/>
       </Unit3>
     </Units>
-    <JumpHistory Count="30" HistoryIndex="29">
+    <JumpHistory Count="29" HistoryIndex="28">
       <Position1>
         <Filename Value="lfnwvm.pas"/>
         <Caret Line="50" TopLine="28"/>
@@ -131,32 +131,28 @@
       </Position23>
       <Position24>
         <Filename Value="lfnwvm.pas"/>
-        <Caret Line="100" Column="34" TopLine="176"/>
+        <Caret Line="76" Column="8" TopLine="59"/>
       </Position24>
       <Position25>
         <Filename Value="lfnwvm.pas"/>
-        <Caret Line="76" Column="8" TopLine="59"/>
+        <Caret Line="135" Column="43" TopLine="112"/>
       </Position25>
       <Position26>
         <Filename Value="lfnwvm.pas"/>
-        <Caret Line="135" Column="43" TopLine="112"/>
+        <Caret Line="250" Column="17" TopLine="240"/>
       </Position26>
       <Position27>
         <Filename Value="lfnwvm.pas"/>
-        <Caret Line="250" Column="17" TopLine="240"/>
+        <Caret Line="146" Column="42" TopLine="135"/>
       </Position27>
       <Position28>
         <Filename Value="lfnwvm.pas"/>
-        <Caret Line="146" Column="42" TopLine="135"/>
+        <Caret Line="191" Column="30" TopLine="176"/>
       </Position28>
       <Position29>
         <Filename Value="lfnwvm.pas"/>
-        <Caret Line="191" Column="30" TopLine="176"/>
-      </Position29>
-      <Position30>
-        <Filename Value="lfnwvm.pas"/>
         <Caret Line="329" Column="26" TopLine="307"/>
-      </Position30>
+      </Position29>
     </JumpHistory>
   </ProjectSession>
 </CONFIG>
