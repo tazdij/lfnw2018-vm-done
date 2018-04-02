@@ -51,6 +51,7 @@ implementation
     C - Char* (C String)
     R - Register
     H - Heap Address (Little Endian)
+    A - Program Memory Address (Little Endian)
     S - Stack Operation
     O - Output
 
@@ -176,6 +177,12 @@ begin
 end;
 
 procedure VM_OpPOP_SI(state : PVMState);
+begin
+
+end;
+
+(* CALL label_to_goto *)
+procedure VM_OpCALL_A(state : PVMState);
 begin
 
 end;
