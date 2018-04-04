@@ -23,9 +23,9 @@ type
     HM : ByteArray; (* Heap Memory *)
     RM : Array[0..255] of Byte; (* Register Memory *)
 
-    SP : Cardinal; (* Stack Pointer *)
-    FP : Cardinal; (* Frame Pointer *)
-    PC : Cardinal; (* Program Counter *)
+    SP : LongInt; (* Stack Pointer *)
+    FP : LongInt; (* Frame Pointer *)
+    PC : LongInt; (* Program Counter *)
 
     (* Handlers for all OpCodes in our VM *)
     OpCodeHandlers : Array[0..255] of VMOpFunc;
@@ -193,24 +193,32 @@ begin
   (*
     Stack Layout
     ---------------------------
-    00 - return address (PC)
-    01 - frame index (-1)
-    02 - arg1
-    03 - arg2
+    00 - arg1                  <--- FP = 00
+    01 - arg2
+    02 - return address (PC)
+    03 - frame index (-1)
     ---------------------------
-    04 - return address (PC)
-    05 - frame index (0)
-    06 - arg1
-    07 - arg2
+    04 - arg1                  <--- FP = 04
+    05 - arg2
+    06 - return address (PC)
+    07 - frame index (0)
     ---------------------------
-    08 - return address (PC)
-    09 - frame index (4)
-    0A - arg1
-    0B - arg2
+    08 - arg1                  <--- FP = 08
+    09 - arg2
+    0A - return address (PC)
+    0B - frame index (4)       <--- SP = 0C
     ...
 
-
+    FP register contains address of the start of the current Stack Frame
   *)
+
+  (* set SP to the new top of the stack *)
+  state^.SP := state^.SM[state^.SP - 1];
+
+  (* set FP to the previous frame *)
+  state^.FP := state^.SM[state^.SP - 2];
+
+  state^
 
 end;
 
@@ -293,7 +301,7 @@ begin
   (* Initialize Registers *)
   state^.PC := 0;
   state^.SP := 0;
-  state^.FP := 0;
+  state^.FP := -1;
 
   (* Register our handlers *)
   VM_RegisterOpHandler(state, 0, @VM_OpHALT);
