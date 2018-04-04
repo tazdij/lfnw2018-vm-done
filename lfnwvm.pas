@@ -153,7 +153,7 @@ begin
 end;
 
 (* Push 32bit value in the heap location *)
-(* PUSHI @X00010000 *)
+(* PUSHI @x00010000 *)
 procedure VM_OpPUSH_HI(state : PVMState);
 begin
 
@@ -187,6 +187,40 @@ begin
 
 end;
 
+(* RET *)
+procedure VM_OpRET(state : PVMState);
+begin
+  (*
+    Stack Layout
+    ---------------------------
+    00 - return address (PC)
+    01 - frame index (-1)
+    02 - arg1
+    03 - arg2
+    ---------------------------
+    04 - return address (PC)
+    05 - frame index (0)
+    06 - arg1
+    07 - arg2
+    ---------------------------
+    08 - return address (PC)
+    09 - frame index (4)
+    0A - arg1
+    0B - arg2
+    ...
+
+
+  *)
+
+end;
+
+(* RET x01000000 *)
+procedure VM_OpRET_I(state : PVMState);
+begin
+
+end;
+
+(* ADD *)
 procedure VM_OpADD_SI(state : PVMState);
 var valA, valB : LongInt;
 begin
