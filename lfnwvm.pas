@@ -189,6 +189,7 @@ end;
 
 (* RET *)
 procedure VM_OpRET(state : PVMState);
+var tmpSP : LongInt;
 begin
   (*
     Stack Layout
@@ -206,25 +207,44 @@ begin
     08 - arg1                  <--- FP = 08
     09 - arg2
     0A - return address (PC)
-    0B - frame index (4)       <--- SP = 0C
+    0B - frame index (4)
+    0C - ______________        <--- SP = 0C
     ...
 
     FP register contains address of the start of the current Stack Frame
   *)
 
-  (* set SP to the new top of the stack *)
-  state^.SP := state^.SM[state^.SP - 1];
+  (* get SP of the new top of the stack *)
+  tmpSP := state^.FP;
 
-  (* set FP to the previous frame *)
-  state^.FP := state^.SM[state^.SP - 2];
 
-  state^
+  (* set FP to the previous frame from the value stored in current stack frame *)
+  state^.FP := state^.SM[state^.SP - 1];
+
+  (* Update program counter - according to stack *)
+  state^.PC := state^.SM[state^.SP - 2];
+
+  (* set SP to new location *)
+  state^.SP := tmpSP;
 
 end;
 
 (* RET x01000000 *)
 procedure VM_OpRET_I(state : PVMState);
+var tmpSP : LongInt;
+    oriSP : LongInt;
+    numRet : Byte;
+    i : Byte;
 begin
+  Move(state^.PM[state^.PC + 1], numRet, 1);
+  oriSP := state^.SP;
+  tmpSP := state^.FP;
+
+  state^.FP := state^.SM[state^.SP - (1 + numRet)];
+  state^.PC := state^.SM[state^.SP - (2 + numRet)];
+  state^.SP := tmpSP;
+
+  // TODO: move results to top of stack
 
 end;
 
