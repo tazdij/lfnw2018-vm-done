@@ -240,11 +240,17 @@ begin
   oriSP := state^.SP;
   tmpSP := state^.FP;
 
-  state^.FP := state^.SM[state^.SP - (1 + numRet)];
-  state^.PC := state^.SM[state^.SP - (2 + numRet)];
+  state^.FP := state^.SM[state^.SP - (1 + numRet)]; // Return to previous StackFrame
+  state^.PC := state^.SM[state^.SP - (2 + numRet)]; // Return to previous Program Code Address + 1
   state^.SP := tmpSP;
 
   // TODO: move results to top of stack
+  //    place SP at the new TOP
+  for i := 0 to numRet do
+  begin
+
+  end;
+
 
 end;
 
