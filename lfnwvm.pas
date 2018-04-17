@@ -183,7 +183,21 @@ end;
 
 (* CALL label_to_goto *)
 procedure VM_OpCALL_A(state : PVMState);
+var destAddr : LongInt = 0;
+    retAddr : LongInt = 0;
+
 begin
+  // All arguments should have been pushed by caller already
+
+  // Return address is next instruction
+  retAddr := state^.PC + 5;
+
+  Move(state^.PM[state^.PC + 1], state^.PC, 4);
+
+  // Put the return address on the Stack
+
+  // Put the previous Frame Pointer on the Stack
+
 
 end;
 
@@ -212,6 +226,7 @@ begin
     ...
 
     FP register contains address of the start of the current Stack Frame
+    SP register contains address of top element + 1 on the stack (next available)
   *)
 
   (* get SP of the new top of the stack *)
