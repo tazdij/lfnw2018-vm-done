@@ -207,22 +207,23 @@ var tmpSP : LongInt;
 begin
   (*
     Stack Layout
+    -1 - Initial Stack Frame Pointer
     ---------------------------
-    00 - arg1                  <--- FP = 00
-    01 - arg2
-    02 - return address (PC)
-    03 - frame index (-1)
+    00 - arg1
+    04 - arg2
+    08 - return address (PC)
+    0C - frame index (-1)       <--- FP = 0C
     ---------------------------
-    04 - arg1                  <--- FP = 04
-    05 - arg2
-    06 - return address (PC)
-    07 - frame index (0)
+    10 - arg1
+    14 - arg2
+    18 - return address (PC)
+    1C - frame index (03)       <--- FP = 1C
     ---------------------------
-    08 - arg1                  <--- FP = 08
-    09 - arg2
-    0A - return address (PC)
-    0B - frame index (4)
-    0C - ______________        <--- SP = 0C
+    20 - arg1
+    24 - arg2
+    28 - return address (PC)
+    2C - frame index (07)       <--- FP = 2C
+    30 - ______________         <--- SP = 30
     ...
 
     FP register contains address of the start of the current Stack Frame
@@ -234,13 +235,13 @@ begin
 
 
   (* set FP to the previous frame from the value stored in current stack frame *)
-  state^.FP := state^.SM[state^.SP - 1];
+  state^.FP := state^.SM[state^.SP - 4];
 
   (* Update program counter - according to stack *)
-  state^.PC := state^.SM[state^.SP - 2];
+  state^.PC := state^.SM[state^.SP - 8];
 
   (* set SP to new location *)
-  state^.SP := tmpSP;
+  state^.SP := state^.FP + 4;  (* Points to Frame Pointer + 4 bytes *)
 
 end;
 

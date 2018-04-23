@@ -17,8 +17,8 @@
         <UnitName Value="lfnwVM"/>
         <IsVisibleTab Value="True"/>
         <EditorIndex Value="1"/>
-        <TopLine Value="132"/>
-        <CursorPos X="32" Y="139"/>
+        <TopLine Value="243"/>
+        <CursorPos Y="219"/>
         <UsageCount Value="250"/>
         <Loaded Value="True"/>
       </Unit1>
@@ -36,7 +36,7 @@
         <Loaded Value="True"/>
       </Unit3>
     </Units>
-    <JumpHistory Count="29" HistoryIndex="28">
+    <JumpHistory Count="30" HistoryIndex="29">
       <Position1>
         <Filename Value="lfnwvm.pas"/>
         <Caret Line="50" TopLine="28"/>
@@ -153,6 +153,10 @@
         <Filename Value="lfnwvm.pas"/>
         <Caret Line="329" Column="26" TopLine="307"/>
       </Position29>
+      <Position30>
+        <Filename Value="lfnwvm.pas"/>
+        <Caret Line="221" Column="32" TopLine="195"/>
+      </Position30>
     </JumpHistory>
   </ProjectSession>
 </CONFIG>
