@@ -17,22 +17,22 @@
         <UnitName Value="lfnwVM"/>
         <IsVisibleTab Value="True"/>
         <EditorIndex Value="1"/>
-        <TopLine Value="243"/>
-        <CursorPos Y="219"/>
+        <TopLine Value="78"/>
+        <CursorPos X="21" Y="93"/>
         <UsageCount Value="250"/>
         <Loaded Value="True"/>
       </Unit1>
       <Unit2>
         <Filename Value="unit1.pas"/>
         <UnitName Value="lfnwVM"/>
-        <UsageCount Value="216"/>
+        <UsageCount Value="211"/>
       </Unit2>
       <Unit3>
         <Filename Value="/usr/share/fpcsrc/3.0.0/rtl/inc/systemh.inc"/>
         <EditorIndex Value="2"/>
         <TopLine Value="734"/>
         <CursorPos X="11" Y="751"/>
-        <UsageCount Value="34"/>
+        <UsageCount Value="61"/>
         <Loaded Value="True"/>
       </Unit3>
     </Units>

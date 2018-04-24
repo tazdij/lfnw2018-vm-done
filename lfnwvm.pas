@@ -88,22 +88,19 @@ end;
 (* Move a constant integer into a Heap Memory Address *)
 (* MOV   @x00010000  x00000001 *)
 procedure VM_OpMOV_HIl(state : PVMState);
-var addr : LongInt;
-    //tmp : LongInt;
+var addr : LongInt = 0;
 begin
   Move(state^.PM[state^.PC + 1], addr, 4);
   Move(state^.PM[state^.PC + 5], state^.HM[addr], 4);
-  //Move(state^.PM[state^.PC + 5], tmp, 4);
-  //WriteLn(addr, ' = ', tmp);
   state^.PC := state^.PC + 9;
 end;
 
 (* Copy from Heap Memory into Heap Memory for x num bytes *)
 (* MOV   @x00010000  @x04010000  x04000000 *)
 procedure VM_OpMOV_HHBx(state : PVMState);
-var addrDest : LongInt;
-    addrSrc : LongInt;
-    count : LongInt;
+var addrDest : LongInt = 0;
+    addrSrc : LongInt = 0;
+    count : LongInt = 0;
 begin
   Move(state^.PM[state^.PC + 1], addrDest, 4);
   Move(state^.PM[state^.PC + 5], addrSrc, 4);
@@ -182,7 +179,7 @@ begin
 end;
 
 (* CALL label_to_goto numargs *)
-(* CALL x0F000000 2 *)
+(* CALL x0F000000 x02 *)
 procedure VM_OpCALL_A(state : PVMState);
 var destAddr : LongInt = 0;
     retAddr : LongInt = 0;
@@ -214,19 +211,23 @@ begin
   (*
     Stack Layout
     -1 - Initial Stack Frame Pointer
-    ---------------------------
+    ... LOCALS ...
     00 - arg1
     04 - arg2
-    08 - return address (PC)
-    0C - frame index (-1)       <--- FP = 0C
     ---------------------------
+    08 - Number of Params
+    08 - return address (PC)
+    0C - frame index (-1)       <--- FP = 08
+    ... LOCALS ...
     10 - arg1
     14 - arg2
+    ---------------------------
     18 - return address (PC)
     1C - frame index (0C)       <--- FP = 1C
-    ---------------------------
+    ... LOCALS ...
     20 - arg1
     24 - arg2
+    ---------------------------
     28 - return address (PC)
     2C - frame index (1C)       <--- FP = 2C
     30 - ______________         <--- SP = 30
