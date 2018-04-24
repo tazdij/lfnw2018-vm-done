@@ -181,10 +181,12 @@ begin
 
 end;
 
-(* CALL label_to_goto *)
+(* CALL label_to_goto numargs *)
+(* CALL x0F000000 2 *)
 procedure VM_OpCALL_A(state : PVMState);
 var destAddr : LongInt = 0;
     retAddr : LongInt = 0;
+    prevFP : LongInt = 0;
 
 begin
   // All arguments should have been pushed by caller already
@@ -192,12 +194,16 @@ begin
   // Return address is next instruction
   retAddr := state^.PC + 5;
 
-  Move(state^.PM[state^.PC + 1], state^.PC, 4);
+  Move(state^.PM[state^.PC + 1], state^.PC, 4); // Move the address to call into PC
 
   // Put the return address on the Stack
+  Move(retAddr, state^.SM[state^.SP], 4);
+  state^.SP := state^.SP + 4;
 
   // Put the previous Frame Pointer on the Stack
-
+  Move(state^.FP, state^.SM[state^.SP], 4);
+  state^.FP := state^.SP;
+  state^.SP := state^.SP + 4;
 
 end;
 
@@ -217,12 +223,12 @@ begin
     10 - arg1
     14 - arg2
     18 - return address (PC)
-    1C - frame index (03)       <--- FP = 1C
+    1C - frame index (0C)       <--- FP = 1C
     ---------------------------
     20 - arg1
     24 - arg2
     28 - return address (PC)
-    2C - frame index (07)       <--- FP = 2C
+    2C - frame index (1C)       <--- FP = 2C
     30 - ______________         <--- SP = 30
     ...
 
@@ -355,6 +361,11 @@ begin
 
   VM_RegisterOpHandler(state, 10, @VM_OpPUSH_Il);
 
+
+  (* Stack Function Calls *)
+  VM_RegisterOpHandler(state, 100, @VM_OpCALL_A);
+  VM_RegisterOpHandler(state, 101, @VM_OpRET);
+  VM_RegisterOpHandler(state, 102, @VM_OpRET_I);
 
   Result := state;
 end;
