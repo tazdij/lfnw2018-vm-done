@@ -180,7 +180,7 @@ end;
 
 procedure VM_OpARG_RI(state : PVMState);
 begin
-
+  // TODO: Get the Arg in position of token 1
 end;
 
 (* CALL label_to_goto numargs *)
@@ -224,15 +224,15 @@ begin
     Stack Layout
     -1 - Initial Stack Frame Pointer
     ... LOCALS ...
-    00 - arg1
-    04 - arg2
+    00 - arg2
+    04 - arg1
     ---------------------------
     08 - Number of Params
     0C - frame index (-1)
     10 - return address (PC)
     ... LOCALS ...
-    10 - arg1
-    14 - arg2
+    10 - arg2
+    14 - arg1
     ---------------------------
     ...
 
