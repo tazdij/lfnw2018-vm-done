@@ -144,7 +144,7 @@ end;
 procedure VM_OpPUSH_Il(state : PVMState);
 begin
   Move(state^.PM[state^.PC + 1], state^.SM[state^.SP], 4);
-  state^.SP := state^.SP + 4;
+  Inc(state^.SP, 4);
 
   state^.PC := state^.PC + 5;
 end;
@@ -153,14 +153,15 @@ end;
 (* PUSHI @x00010000 *)
 procedure VM_OpPUSH_HI(state : PVMState);
 begin
-
+  // TODO
 end;
 
 (* Push a 32bit value from a register into the stack *)
 (* PUSH R2 *)
 procedure VM_OpPUSH_RI(state : PVMState);
 begin
-
+  Move(state^.RM[state^.PC + 1], state^.SM[state^.SP], 4);
+  Inc(state^.SP, 4);
 end;
 
 procedure VM_OpPOP_HI(state : PVMState);
@@ -195,7 +196,8 @@ begin
 
   // Return address is next instruction
   //        OP[1] ADDR[4] ARGS[4]
-  Move(state^.PM[state^.PC + 9], retAddr, 4);
+  //Move(state^.PM[state^.PC + 9], retAddr, 1);
+  retAddr := state^.PC + 9;
 
   // Put number of args on stack
   Move(state^.PM[state^.PC + 5], state^.SM[state^.SP], 4);
@@ -209,7 +211,7 @@ begin
   Move(retAddr, state^.SM[state^.SP], 4);
   Inc(state^.SP, 4);
 
-  state^.FP := state^.SP;
+  state^.FP := state^.SP - 12;
 
   // Move the address to call into PC
   Move(state^.PM[state^.PC + 1], state^.PC, 4);
@@ -227,12 +229,12 @@ begin
     00 - arg2
     04 - arg1
     ---------------------------
-    08 - Number of Params
+    08 - Number of Params (2)
     0C - frame index (-1)
     10 - return address (PC)
     ... LOCALS ...
-    10 - arg2
-    14 - arg1
+    14 - arg2
+    18 - arg1
     ---------------------------
     ...
 
@@ -260,15 +262,17 @@ procedure VM_OpRET_I(state : PVMState);
 var tmpSP : LongInt;
     oriSP : LongInt;
     numRet : Byte;
-    i : Byte;
+    i : LongInt;
+    numArgs : LongInt;
 begin
-  Move(state^.PM[state^.PC + 1], numRet, 1);
+  Move(state^.PM[state^.PC + 1], numRet, 4);
   oriSP := state^.SP;
   tmpSP := state^.FP;
 
-  state^.FP := state^.SM[state^.SP - (1 + numRet)]; // Return to previous StackFrame
-  state^.PC := state^.SM[state^.SP - (2 + numRet)]; // Return to previous Program Code Address + 1
-  state^.SP := tmpSP;
+  Move(state^.SM[tmpSP + 4], state^.FP, 4); // Return to previous StackFrame
+  Move(state^.SM[tmpSP + 8], state^.PC, 4); // Return to previous Program Code Address + 1
+  Move(state^.SM[tmpSP], numArgs, 4); // Get the number of args
+  state^.SP := tmpSP - (numArgs * 4);
 
   // TODO: move results to top of stack
   //    place SP at the new TOP
@@ -290,6 +294,20 @@ begin
   Move(valA, state^.SM[state^.SP - 8], 4);
   state^.SP := state^.SP - 4;
   state^.PC := state^.PC + 1;
+end;
+
+procedure VM_OpADD_RRI(state : PVMState);
+var valA, valB, res : LongInt;
+begin
+  Move(state^.RM[state^.PC + 1], valA, 4);
+  Move(state^.RM[state^.PC + 2], valB, 4);
+
+  // Calculate the addition
+  res := valA + valB;
+
+  // Copy the result into the first operand
+  Move(res, state^.RM[state^.PC + 1], 4);
+
 end;
 
 procedure VM_OpADD_HSI(state : PVMState);
@@ -364,6 +382,13 @@ begin
   VM_RegisterOpHandler(state, 5, @VM_OpPRINT_HOC); // Special functionality, stops at first NULL (0) Byte
 
   VM_RegisterOpHandler(state, 10, @VM_OpPUSH_Il);
+  VM_RegisterOpHandler(state, 11, @VM_OpPUSH_RI);
+
+
+  (* ADD Functions *)
+  VM_RegisterOpHandler(state, 30, @VM_OpADD_RRI);
+
+
 
   (* Stack Arguments *)
   VM_RegisterOpHandler(state, 90, @VM_OpARG_RI);
@@ -400,6 +425,7 @@ begin
   while not IsEnd do
   begin
     CurOpCode := state^.PM[state^.PC];
+    WriteLn('OpCode: ' + IntToStr(CurOpCode));
     state^.OpCodeHandlers[CurOpCode](state);
 
     if state^.PC = Length(state^.PM) then
@@ -435,6 +461,28 @@ begin
   for i := 0 to Length(state^.SM) - 1 do
   begin
     Write(HexStr(state^.SM[i], 2), ' ');
+
+    if (i + 1) mod 8 = 0 then
+    begin
+      WriteLn();
+
+      Inc(j);
+      if j = 8 then
+      begin
+        WriteLn();
+        WriteLn(i+1);
+        j := 0;
+      end;
+
+    end;
+  end;
+
+  WriteLn('');
+  WriteLn('Register Memory:');
+  j := 0;
+  for i := 0 to Length(state^.RM) - 1 do
+  begin
+    Write(HexStr(state^.RM[i], 2), ' ');
 
     if (i + 1) mod 8 = 0 then
     begin
