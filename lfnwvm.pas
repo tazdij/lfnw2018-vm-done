@@ -180,8 +180,16 @@ begin
 end;
 
 procedure VM_OpARG_RI(state : PVMState);
+var paramIdx : LongInt;
+    reg : Byte;
 begin
   // TODO: Get the Arg in position of token 1
+  Move(state^.PM[state^.PC + 1], reg, 1);
+  Move(state^.PM[state^.PC + 2], paramIdx, 4);
+  Move(state^.SM[state^.FP - (paramIdx * 4)], state^.RM[reg], 4);
+
+  Inc(state^.PC, 6);
+
 end;
 
 (* CALL label_to_goto numargs *)
@@ -261,7 +269,7 @@ end;
 procedure VM_OpRET_I(state : PVMState);
 var tmpSP : LongInt;
     oriSP : LongInt;
-    numRet : Byte;
+    numRet : LongInt;
     i : LongInt;
     numArgs : LongInt;
 begin
@@ -276,9 +284,10 @@ begin
 
   // TODO: move results to top of stack
   //    place SP at the new TOP
-  for i := 0 to numRet do
+  for i := 0 to numRet - 1 do
   begin
-
+    Move(state^.SM[oriSP - i - 1], state^.SM[state^.SP], 4);
+    Inc(state^.SP, 4);
   end;
 
 
@@ -298,15 +307,20 @@ end;
 
 procedure VM_OpADD_RRI(state : PVMState);
 var valA, valB, res : LongInt;
+    regA, regB : Byte;
 begin
-  Move(state^.RM[state^.PC + 1], valA, 4);
-  Move(state^.RM[state^.PC + 2], valB, 4);
+  Move(state^.PM[state^.PC + 1], regA, 1);
+  Move(state^.PM[state^.PC + 2], regB, 1);
+  Move(state^.RM[regA], valA, 4);
+  Move(state^.RM[regB], valB, 4);
 
   // Calculate the addition
   res := valA + valB;
 
   // Copy the result into the first operand
-  Move(res, state^.RM[state^.PC + 1], 4);
+  Move(res, state^.RM[state^.PM[state^.PC + 1]], 4);
+
+  Inc(state^.PC, 3);
 
 end;
 
@@ -367,6 +381,7 @@ begin
 
   SetLength(state^.HM, HeapSize);
   SetLength(state^.SM, StackSize);
+  FillByte(state^.RM, 256, 0);
 
   (* Initialize Registers *)
   state^.PC := 0;
